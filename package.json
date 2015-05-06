@@ -7,8 +7,8 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/philipp-az/az-flux-videoSearch.git"
-    }
-        "devDependencies": {
+    },
+    "devDependencies": {
         "browserify": "^10.1.0",
         "gulp": "^3.8.11",
         "gulp-concat": "^2.5.2",
