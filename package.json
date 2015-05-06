@@ -2,7 +2,7 @@
     "name": "az-flux-videoSearch",
     "version": "0.0.1",
     "description": "Demonstration of React/Flux and Kaltura OVP",
-    "author": "",
+    "author": "Philipp Killer",
     "license": "ISC",
     "repository": {
         "type": "git",
