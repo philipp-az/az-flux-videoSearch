@@ -1,0 +1,119 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'material-ui',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 warn package.json az-flux-videoSearch@0.0.1 No README data
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'material-ui@^0.8.0', null ]
+7 verbose cache add name=undefined spec="material-ui@^0.8.0" args=["material-ui@^0.8.0",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'material-ui@^0.8.0',
+8 verbose parsed url   path: 'material-ui@^0.8.0',
+8 verbose parsed url   href: 'material-ui@^0.8.0' }
+9 verbose cache add name="material-ui" spec="^0.8.0" args=["material-ui","^0.8.0"]
+10 verbose parsed url { protocol: null,
+10 verbose parsed url   slashes: null,
+10 verbose parsed url   auth: null,
+10 verbose parsed url   host: null,
+10 verbose parsed url   port: null,
+10 verbose parsed url   hostname: null,
+10 verbose parsed url   hash: null,
+10 verbose parsed url   search: null,
+10 verbose parsed url   query: null,
+10 verbose parsed url   pathname: '^0.8.0',
+10 verbose parsed url   path: '^0.8.0',
+10 verbose parsed url   href: '^0.8.0' }
+11 verbose addNamed [ 'material-ui', '^0.8.0' ]
+12 verbose addNamed [ null, '>=0.8.0-0 <0.9.0-0' ]
+13 silly lockFile 4e37db22-material-ui-0-8-0 material-ui@^0.8.0
+14 verbose lock material-ui@^0.8.0 /Users/philkil/.npm/4e37db22-material-ui-0-8-0.lock
+15 silly addNameRange { name: 'material-ui',
+15 silly addNameRange   range: '>=0.8.0-0 <0.9.0-0',
+15 silly addNameRange   hasData: false }
+16 verbose request where is /material-ui
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 778879807756ad0b
+19 verbose url raw /material-ui
+20 verbose url resolving [ 'https://registry.npmjs.org/', './material-ui' ]
+21 verbose url resolved https://registry.npmjs.org/material-ui
+22 verbose request where is https://registry.npmjs.org/material-ui
+23 info trying registry request attempt 1 at 14:08:41
+24 verbose etag "ASJVVCAHFSG6T0HUXZ82M8NDR"
+25 http GET https://registry.npmjs.org/material-ui
+26 http 304 https://registry.npmjs.org/material-ui
+27 silly registry.get cb [ 304,
+27 silly registry.get   { date: 'Fri, 08 May 2015 12:08:41 GMT',
+27 silly registry.get     via: '1.1 varnish',
+27 silly registry.get     'cache-control': 'max-age=60',
+27 silly registry.get     etag: '"ASJVVCAHFSG6T0HUXZ82M8NDR"',
+27 silly registry.get     age: '27',
+27 silly registry.get     connection: 'keep-alive',
+27 silly registry.get     'x-served-by': 'cache-ams4141-AMS',
+27 silly registry.get     'x-cache': 'HIT',
+27 silly registry.get     'x-cache-hits': '1',
+27 silly registry.get     'x-timer': 'S1431086921.459769,VS0,VE0',
+27 silly registry.get     vary: 'Accept' } ]
+28 verbose etag https://registry.npmjs.org/material-ui from cache
+29 silly addNameRange number 2 { name: 'material-ui',
+29 silly addNameRange   range: '>=0.8.0-0 <0.9.0-0',
+29 silly addNameRange   hasData: true }
+30 silly addNameRange versions [ 'material-ui',
+30 silly addNameRange   [ '0.1.0',
+30 silly addNameRange     '0.1.1',
+30 silly addNameRange     '0.1.2',
+30 silly addNameRange     '0.1.21',
+30 silly addNameRange     '0.1.22',
+30 silly addNameRange     '0.1.23',
+30 silly addNameRange     '0.1.24',
+30 silly addNameRange     '0.1.25',
+30 silly addNameRange     '0.1.26',
+30 silly addNameRange     '0.1.27',
+30 silly addNameRange     '0.1.28',
+30 silly addNameRange     '0.1.29',
+30 silly addNameRange     '0.1.30',
+30 silly addNameRange     '0.2.0',
+30 silly addNameRange     '0.2.1',
+30 silly addNameRange     '0.2.2',
+30 silly addNameRange     '0.3.0',
+30 silly addNameRange     '0.3.1',
+30 silly addNameRange     '0.3.2',
+30 silly addNameRange     '0.3.3',
+30 silly addNameRange     '0.4.0',
+30 silly addNameRange     '0.4.1',
+30 silly addNameRange     '0.5.0',
+30 silly addNameRange     '0.6.0',
+30 silly addNameRange     '0.6.1',
+30 silly addNameRange     '0.7.0',
+30 silly addNameRange     '0.7.1',
+30 silly addNameRange     '0.7.2',
+30 silly addNameRange     '0.7.3',
+30 silly addNameRange     '0.7.4',
+30 silly addNameRange     '0.7.5' ] ]
+31 silly lockFile 4e37db22-material-ui-0-8-0 material-ui@^0.8.0
+32 silly lockFile 4e37db22-material-ui-0-8-0 material-ui@^0.8.0
+33 error notarget No compatible version found: material-ui@'>=0.8.0-0 <0.9.0-0'
+33 error notarget Valid install targets:
+33 error notarget ["0.1.0","0.1.1","0.1.2","0.1.21","0.1.22","0.1.23","0.1.24","0.1.25","0.1.26","0.1.27","0.1.28","0.1.29","0.1.30","0.2.0","0.2.1","0.2.2","0.3.0","0.3.1","0.3.2","0.3.3","0.4.0","0.4.1","0.5.0","0.6.0","0.6.1","0.7.0","0.7.1","0.7.2","0.7.3","0.7.4","0.7.5"]
+33 error notarget
+33 error notarget This is most likely not a problem with npm itself.
+33 error notarget In most cases you or one of your dependencies are requesting
+33 error notarget a package version that doesn't exist.
+34 error System Darwin 14.1.0
+35 error command "node" "/usr/local/bin/npm" "install" "material-ui" "--save"
+36 error cwd /Users/philkil/development/az medien/az-flux-videoSearch
+37 error node -v v0.10.33
+38 error npm -v 1.4.28
+39 error code ETARGET
+40 verbose exit [ 1, true ]

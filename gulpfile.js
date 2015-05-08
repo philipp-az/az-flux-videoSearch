@@ -2,7 +2,10 @@ var gulp = require('gulp')
     , browserify = require('browserify')
     , concat = require('gulp-concat')
     , reactify = require('reactify')
-    , source = require("vinyl-source-stream");
+    , source = require("vinyl-source-stream")
+    , less = require('gulp-less')
+    , path = require('path')
+    ;
 
 gulp.task('browserify', function(){
     var b = browserify();
@@ -23,5 +26,14 @@ gulp.task('default', ['browserify','copy']);
 
 gulp.task('watch', function() {
     gulp.watch('src/**/*.*', ['default']);
+});
+
+gulp.task('less', function() {
+    return gulp.src('./src/less/main.less')
+            .pipe(less({
+                path: [path.join(__dirname, 'less', 'includes')]
+            }))
+            .pipe(gulp.dest('./dist/css'));
+
 });
 
