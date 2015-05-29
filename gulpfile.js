@@ -16,13 +16,25 @@ gulp.task('browserify', function(){
         .pipe(gulp.dest('./dist/js'));
     return r;
 });
+gulp.task('browserify-noflux', function(){
+    var b = browserify();
+    b.transform(reactify); // use the reactify transform
+    b.add('./src/js/main-noflux.js');
+    var r = b.bundle()
+        .pipe(source('main-noflux.js'))
+        .pipe(gulp.dest('./dist/js'));
+    return r;
+});
 
 gulp.task('copy', function() {
     gulp.src('src/index.html')
         .pipe(gulp.dest('dist'));
+
+    gulp.src('src/index-noflux.html')
+        .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['browserify','copy']);
+gulp.task('default', ['browserify','browserify-noflux','copy']);
 
 gulp.task('watch', function() {
     gulp.watch('src/**/*.*', ['default']);
