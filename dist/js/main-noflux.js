@@ -19855,8 +19855,6 @@ var React = require('react');
 var SearchResults =
         React.createClass({displayName: "SearchResults",
             render: function() {
-                //console.log('SearchResults props: ',this.props);
-                //console.log('SearchResults state: ',this.state);
                 if (this.props.videos) {
                     var videos = this.props.videos;
                     var searchTextLowerCase = this.props.searchtext.trim().toLowerCase();
@@ -19910,6 +19908,7 @@ var VideoSearch =
             return {
                     searchtext:''
                     ,kaltura: {categoryId:'21939571',ks:null}
+                    ,videos:[]
             };
         }
         ,componentWillMount: function() {
@@ -19945,7 +19944,10 @@ var VideoSearch =
                 client.ks = _self.state.kaltura.ks;
                 var filter = new KalturaBaseEntryFilter();
                 filter.categoriesIdsMatchOr = _self.state.kaltura.categoryId;//21939571: ZüriNews
-                filter.freeText = _self.state.searchtext;
+                //filter.categoryAncestorIdIn = _self.state.kaltura.categoryId;//21939571: ZüriNews
+                filter.freeText = _self.state.searchtext+'*';
+                filter.orderBy = '-createdAt';//KalturaBaseEntryOrderBy.CREATED_AT_ASC;
+                //var filter.typeEqual = KalturaEntryType.MEDIA_CLIP;
                 var pager = null;
 
                 // load media entries
@@ -19961,20 +19963,17 @@ var VideoSearch =
 
                     // set loaded data to component's state
                     if (_self.isMounted()) {
-                        console.log('Videos: ',results.objects);
                         _self.setState({videos: results.objects});
-                        //console.log('-> videos for ',_self.state.searchtext,' ',_self.state.videos);
                     }
                 };
                 var result = client.baseEntry.listAction(mediaDataLoaded, filter, pager);
-                delete client;
 
             };
-            getKalturaVideos();
+            getKalturaVideos(); 
         }
         ,search: function(e) {
             if (this.state.kaltura.ks) {
-                this.setState({videos: null});
+                this.setState({videos: null});//remove videos to render "loading spinner"
                 this.getKalturaVideosByNameAndCategory();
             }
         }

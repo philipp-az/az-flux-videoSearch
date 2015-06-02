@@ -5,8 +5,6 @@ var React = require('react');
 var SearchResults =
         React.createClass({
             render: function() {
-                //console.log('SearchResults props: ',this.props);
-                //console.log('SearchResults state: ',this.state);
                 if (this.props.videos) {
                     var videos = this.props.videos;
                     var searchTextLowerCase = this.props.searchtext.trim().toLowerCase();
