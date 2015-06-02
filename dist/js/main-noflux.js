@@ -1,7 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /** @jsx React.DOM */
+
 var APP = require('./components/app-noflux');
 var React = require('react');
+
+//Not working: var KalturaClient = require('./vendor/KalturaClient.min.js');
+
 //var MaterialUI = require('material-ui');
 //var RaisedButton = MaterialUI.RaisedButton;
 
@@ -19798,7 +19802,29 @@ var APP =
 
 module.exports = APP;
 
-},{"../components/app-videosearch.js":161,"react":157}],159:[function(require,module,exports){
+},{"../components/app-videosearch.js":162,"react":157}],159:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+
+var SearchButton =
+        React.createClass({displayName: "SearchButton",
+            /*getInitialState: function() {
+                return {searchtext:''};
+            }
+            ,*/
+            search: function(e) {
+                this.props.onClick(e);//call parent's search method (basic child parent communication)
+            }
+            ,render: function() {
+                return (
+                    React.createElement("input", {onClick: this.search, value: this.props.label, type: "button"})
+                );
+            }
+        });
+
+module.exports = SearchButton;
+
+},{"react":157}],160:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -19821,7 +19847,7 @@ var SearchField =
 
 module.exports = SearchField;
 
-},{"react":157}],160:[function(require,module,exports){
+},{"react":157}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -19829,17 +19855,25 @@ var React = require('react');
 var SearchResults =
         React.createClass({displayName: "SearchResults",
             render: function() {
-                var videos = this.props.videos;
-                var searchTextLowerCase = this.props.searchtext.trim().toLowerCase();
-                var videosFilteredByTitle = videos.filter(function(v) {
-                     return v.title.toLowerCase().match( searchTextLowerCase );
-                });
+                //console.log('SearchResults props: ',this.props);
+                //console.log('SearchResults state: ',this.state);
+                if (this.props.videos) {
+                    var videos = this.props.videos;
+                    var searchTextLowerCase = this.props.searchtext.trim().toLowerCase();
+                    /*var videosFilteredByTitle = videos.filter(function(v) {
+                        return v.name.toLowerCase().match( searchTextLowerCase );
+                    });*/
+
+                    var content = videos.map(function(r) {
+                        return React.createElement(SearchItem, {key: r.id, id: r.id, name: r.name});
+                    });
+                } else {
+                    content = React.createElement("p", null, "Loading Videos...");
+                }
 
                 return (
                     React.createElement("div", null, 
-                    videosFilteredByTitle.map(function(r) {
-                        return React.createElement(SearchItem, {key: r.id, id: r.id, title: r.title});
-                    })
+                    content
                     )
                 );
             }
@@ -19851,7 +19885,7 @@ var SearchItem =
         render: function() {
             return (
                 React.createElement("p", null, 
-                this.props.id, " - ", this.props.title
+                this.props.id, " - ", this.props.name
                 )
                 );
         }
@@ -19862,41 +19896,108 @@ var SearchItem =
 
 module.exports = SearchResults;
 
-},{"react":157}],161:[function(require,module,exports){
+},{"react":157}],162:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var SearchField = require('../components/app-searchfield.js');
 var SearchResults = require('../components/app-searchresults.js');
+var SearchButton = require('../components/app-searchbutton.js');
 
 
 var VideoSearch =
     React.createClass({displayName: "VideoSearch",
         getInitialState: function() {
-            return {searchtext:'Ma'};
+            return {
+                    searchtext:''
+                    ,kaltura: {categoryId:'21939571',ks:null}
+            };
+        }
+        ,componentWillMount: function() {
+            if (!this.state.kaltura.ks) {
+                this.getKalturaSession();
+            }
+
+        }
+        ,componentWillUpdate: function(nextProps, nextState) {
+            //console.log('componentWillUpdate: nextState: ',nextState);
         }
         ,onChange: function(e) {
             this.setState({searchtext: e.target.value});
+        }
+        ,getKalturaSession: function() {
+            $.getJSON('http://yoleidoo.com/az/kaltura-code-samples/az/player%20embedding/getKS.php', function( data ) {
+                setKS(data);//implement this on your production server, make sure you use a user with restricted rights
+                            //this link is for development purposed only. The KS generated grants admin rights.
+            });
+            var _self = this;
+            var setKS = function(data) {
+                _self.setState( { kaltura: {ks: data[0]}} );
+            }
+        }
+        ,getKalturaVideosByNameAndCategory: function() {
+            var _self = this;
+            var getKalturaVideos = function () {
+                // get videos using Kaltura Client Library API
+                var partnerId =1719221;
+                var config = new KalturaConfiguration(partnerId);
+                config.serviceUrl = "http://www.kaltura.com/";
+                var client = new KalturaClient(config);
+                client.ks = _self.state.kaltura.ks;
+                var filter = new KalturaBaseEntryFilter();
+                filter.categoriesIdsMatchOr = _self.state.kaltura.categoryId;//21939571: ZüriNews
+                filter.freeText = _self.state.searchtext;
+                var pager = null;
+
+                // load media entries
+                var mediaDataLoaded = function (success, results) {
+                    if (!success) {
+                        console.log('ERROR: '+results);
+                    }
+
+                    if (results.code && results.message) {
+                        console.log(results.objects);
+                        console.log('ERROR: '+results.message);
+                    }
+
+                    // set loaded data to component's state
+                    if (_self.isMounted()) {
+                        console.log('Videos: ',results.objects);
+                        _self.setState({videos: results.objects});
+                        //console.log('-> videos for ',_self.state.searchtext,' ',_self.state.videos);
+                    }
+                };
+                var result = client.baseEntry.listAction(mediaDataLoaded, filter, pager);
+                delete client;
+
+            };
+            getKalturaVideos();
+        }
+        ,search: function(e) {
+            if (this.state.kaltura.ks) {
+                this.setState({videos: null});
+                this.getKalturaVideosByNameAndCategory();
+            }
         }
         ,render: function() {
             return (
                 React.createElement("div", null, 
                     React.createElement("h1", null, "Kaltura Video Search"), 
-                    React.createElement(SearchField, {searchtext: this.state.searchtext, onChange: this.onChange}), 
+                    React.createElement(SearchField, {searchtext: this.state.searchtext, onChange: this.onChange}), " ", React.createElement(SearchButton, {onClick: this.search, label: "suchen"}), 
                     React.createElement("br", null), 
                     "Search results for ", this.state.searchtext, React.createElement("br", null), 
-                    React.createElement(SearchResults, {searchtext: this.state.searchtext, videos: videos})
+                    React.createElement(SearchResults, {searchtext: this.state.searchtext, videos: this.state.videos})
                 )
                 );
         }
     });
 
-var videos = [
-    {id:'1',title: 'Event Horizon'}
-    ,{id:'2',title: 'Pulp Fiction'}
-    ,{id:'3',title: 'Magnolia'}
+/*var videosMock = [
+    {id:'1',name: 'Event Horizon'}
+    ,{id:'2',name: 'Pulp Fiction'}
+    ,{id:'3',name: 'Magnolia'}
 
-];
+];*/
 
 module.exports = VideoSearch;
 
-},{"../components/app-searchfield.js":159,"../components/app-searchresults.js":160,"react":157}]},{},[1]);
+},{"../components/app-searchbutton.js":159,"../components/app-searchfield.js":160,"../components/app-searchresults.js":161,"react":157}]},{},[1]);
